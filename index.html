@@ -1,11 +1,347 @@
-<body style="background:black;color:lime;text-align:center;font-family:Arial;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cinematic Cat Button</title>
 
-<h1>🚀 Welcome To My First GitHub Website</h1>
+<style>
+/* =========================
+   GLOBAL STYLES
+========================= */
 
-<p>Hello, I am Killshot Lie.</p>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-<p>I am learning GitHub and AI.</p>
+body{
+    overflow:hidden;
+    background:#050505;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Arial, Helvetica, sans-serif;
+    transition:background 1s ease;
+}
 
-<img src="pexels-kostas-dimopoulos-119583302-34775615.jpg" width="400">
+/* Cinematic animated fog background */
+
+.background{
+    position:fixed;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    z-index:-5;
+}
+
+.fog{
+    position:absolute;
+    width:-20%;
+    width:140%;
+    height:140%;
+    background:radial-gradient(circle, rgba(255,255,255,0.06), transparent 70%);
+    animation:floatFog 25s infinite linear;
+    filter:blur(80px);
+}
+
+.fog:nth-child(2){
+    animation-duration:35s;
+    opacity:0.5;
+}
+
+@keyframes floatFog{
+    from{ transform:translateX(-10%) rotate(0deg);}
+    to{ transform:translateX(10%) rotate(360deg);}
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.center{
+    position:relative;
+    z-index:10;
+}
+
+.red-button{
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    border:none;
+    cursor:pointer;
+
+    background:
+    radial-gradient(circle at top, #ff6666, #b30000);
+
+    box-shadow:
+    0 20px 40px rgba(0,0,0,0.8),
+    inset 0 -12px 20px rgba(0,0,0,0.5),
+    inset 0 8px 20px rgba(255,255,255,0.3),
+    0 0 30px rgba(255,0,0,0.5);
+
+    transition:
+    transform 0.15s ease,
+    box-shadow 0.3s ease;
+
+    position:relative;
+}
+
+.red-button::before{
+    content:'';
+    position:absolute;
+    inset:12px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.1);
+    filter:blur(8px);
+}
+
+.red-button:hover{
+    transform:scale(1.05);
+    box-shadow:
+    0 0 60px rgba(255,0,0,0.8),
+    0 20px 40px rgba(0,0,0,0.8);
+}
+
+.red-button:active{
+    transform:translateY(10px) scale(0.98);
+}
+
+/* Pulsing glow */
+
+.pulse{
+    position:absolute;
+    width:260px;
+    height:260px;
+    border-radius:50%;
+    background:rgba(255,0,0,0.15);
+    animation:pulse 2s infinite;
+    z-index:-1;
+    top:-40px;
+    left:-40px;
+}
+
+@keyframes pulse{
+    0%{
+        transform:scale(0.8);
+        opacity:0.6;
+    }
+    70%{
+        transform:scale(1.4);
+        opacity:0;
+    }
+    100%{
+        opacity:0;
+    }
+}
+
+/* =========================
+   CATS
+========================= */
+
+.cats{
+    position:absolute;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+}
+
+.cat{
+    position:absolute;
+    font-size:55px;
+    transition:all 0.8s ease;
+    animation:floatCat 4s ease-in-out infinite;
+    filter:drop-shadow(0 0 10px rgba(255,255,255,0.2));
+}
+
+.cat.angry{
+    transform:scale(1.3) rotate(-5deg);
+    filter:
+    drop-shadow(0 0 15px red)
+    drop-shadow(0 0 25px crimson);
+}
+
+@keyframes floatCat{
+    0%,100%{
+        transform:translateY(0px);
+    }
+    50%{
+        transform:translateY(-10px);
+    }
+}
+
+/* =========================
+   OVERLAY EFFECTS
+========================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(255,0,0,0);
+    pointer-events:none;
+    transition:background 1s ease;
+}
+
+.overlay.active{
+    background:rgba(255,0,0,0.15);
+}
+
+/* Screen shake */
+
+.shake{
+    animation:shake 0.4s;
+}
+
+@keyframes shake{
+    0%{ transform:translate(0);}
+    20%{ transform:translate(-8px,4px);}
+    40%{ transform:translate(8px,-4px);}
+    60%{ transform:translate(-6px,2px);}
+    80%{ transform:translate(6px,-2px);}
+    100%{ transform:translate(0);}
+}
+
+/* Text */
+
+.title{
+    position:absolute;
+    top:40px;
+    width:50%;
+    transform:translateX(-50%);
+    color:white;
+    font-size:2rem;
+    letter-spacing:4px;
+    text-shadow:0 0 20px rgba(255,255,255,0.5);
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+    .red-button{
+        width:130px;
+        height:130px;
+    }
+
+    .pulse{
+        width:190px;
+        height:190px;
+    }
+
+    .cat{
+        font-size:40px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="background">
+    <div class="fog"></div>
+    <div class="fog"></div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<h1 class="title">CINEMATIC CAT BUTTON</h1>
+
+<div class="cats" id="cats"></div>
+
+<div class="center">
+    <div class="pulse"></div>
+
+    <button class="red-button" id="button"></button>
+</div>
+
+<script>
+
+/* =========================
+   CREATE CATS
+========================= */
+
+const catsContainer = document.getElementById('cats');
+
+const calmCats = ['🐱','😺','🐈','😺'];
+const angryCats = ['😾','🐅','🙀','😡'];
+
+const cats = [];
+
+for(let i=0;i<22;i++){
+
+    const cat = document.createElement('div');
+    cat.classList.add('cat');
+
+    cat.innerText = calmCats[Math.floor(Math.random()*calmCats.length)];
+
+    cat.style.left = Math.random()*100 + '%';
+    cat.style.top = Math.random()*100 + '%';
+
+    cat.style.animationDelay = Math.random()*5 + 's';
+
+    catsContainer.appendChild(cat);
+
+    cats.push(cat);
+}
+
+/* =========================
+   BUTTON INTERACTION
+========================= */
+
+const button = document.getElementById('button');
+const overlay = document.getElementById('overlay');
+
+let angry = false;
+
+button.addEventListener('click', ()=>{
+
+    angry = !angry;
+
+    document.body.classList.add('shake');
+
+    setTimeout(()=>{
+        document.body.classList.remove('shake');
+    },400);
+
+    if(angry){
+
+        overlay.classList.add('active');
+
+        document.body.style.background = '#120000';
+
+        cats.forEach(cat=>{
+
+            cat.classList.add('angry');
+
+            cat.innerText =
+            angryCats[Math.floor(Math.random()*angryCats.length)];
+
+        });
+
+    }else{
+
+        overlay.classList.remove('active');
+
+        document.body.style.background = '#050505';
+
+        cats.forEach(cat=>{
+
+            cat.classList.remove('angry');
+
+            cat.innerText =
+            calmCats[Math.floor(Math.random()*calmCats.length)];
+
+        });
+
+    }
+
+});
+
+</script>
 
 </body>
+</html>
